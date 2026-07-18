@@ -1,0 +1,17 @@
+
+*.pyc
+__pycache__/
+.venv/
+.env
+local.settings.json
+.vscode/
+log.txt
+.python_packages/
+__blobstorage__/
+__queuestorage__/
+__tablestorage__/
+vsts-agent-win-x64-*/
+.credentials
+.credentials_rsa
+.credentials.json
+AzureConfig
