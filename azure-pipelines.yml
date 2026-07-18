@@ -2,20 +2,25 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-- checkout: self
-
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.10'
-
 - script: |
     python -m pip install --upgrade pip
     pip install -r requirements.txt
   displayName: 'Install dependencies'
 
-- script: |
-    echo "Build step running..."
-  displayName: 'Build project'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveType: zip
+    archiveFile: $(Build.ArtifactStagingDirectory)/app.zip
+    replaceExistingArchive: true
+
+- task: AzureFunctionApp@1
+  inputs:
+    azureSubscription: 'YOUR-SERVICE-CONNECTION'
+    appType: functionAppLinux
+    appName: 'YOUR-FUNCTION-APP-NAME'
+    package: $(Build.ArtifactStagingDirectory)/app.zip
